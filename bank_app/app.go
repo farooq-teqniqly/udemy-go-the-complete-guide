@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
 func main() {
 
@@ -8,42 +14,42 @@ func main() {
 	balance := 0
 
 	for {
-
 		showMenu()
 
-		var choice int
-		_, _ = fmt.Scanln(&choice)
+		choice := scanInt()
 
-		if choice == 1 {
-			fmt.Print("Deposit amount: ")
-			var amount int
-			_, _ = fmt.Scanln(&amount)
-			balance += amount
-			fmt.Println("Deposited", amount)
+		switch choice {
+		case 1:
+			balance = deposit(balance)
+		case 2:
+			balance = withdraw(balance)
+		case 3:
 			fmt.Println("Balance: ", balance)
-		}
-		if choice == 2 {
-			fmt.Print("Withdraw amount: ")
-			var amount int
-			_, _ = fmt.Scanln(&amount)
-			balance -= amount
-			fmt.Println("Withdrew", amount)
-			fmt.Println("Balance: ", balance)
-		}
-		if choice == 3 {
-			fmt.Println("Balance: ", balance)
-		}
-		if choice == 4 {
-			break
-		} else {
+		case 4:
+			fmt.Println("Goodbye!")
+			return
+		default:
 			fmt.Println("Invalid choice")
 		}
-
-		fmt.Println("You chose", choice)
-
 	}
+}
 
-	fmt.Println("Goodbye!")
+func withdraw(balance int) int {
+	fmt.Print("Withdraw amount: ")
+	amount := scanInt()
+	balance -= amount
+	fmt.Println("Withdrew", amount)
+	fmt.Println("Balance: ", balance)
+	return balance
+}
+
+func deposit(balance int) int {
+	fmt.Print("Deposit amount: ")
+	amount := scanInt()
+	balance += amount
+	fmt.Println("Deposited", amount)
+	fmt.Println("Balance: ", balance)
+	return balance
 }
 
 func showMenu() {
@@ -53,4 +59,18 @@ func showMenu() {
 	fmt.Println("3. Balance")
 	fmt.Println("4. Exit")
 	fmt.Println("Enter your choice: ")
+}
+
+func scanInt() int {
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		amount, err := strconv.Atoi(input)
+		if err != nil {
+			fmt.Println("Invalid input. Please enter a whole number.")
+			continue
+		}
+		return amount
+	}
 }
