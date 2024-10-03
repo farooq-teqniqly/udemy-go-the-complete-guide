@@ -27,7 +27,7 @@ func main() {
 			fmt.Println("Balance: ", balance)
 		case 4:
 			fmt.Println("Goodbye!")
-			return
+			os.Exit(0)
 		default:
 			fmt.Println("Invalid choice")
 		}
