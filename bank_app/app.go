@@ -62,15 +62,26 @@ func showMenu() {
 }
 
 func scanInt() int {
+	const maxInputSize = 10
 	reader := bufio.NewReader(os.Stdin)
+	buf := make([]byte, maxInputSize)
+
 	for {
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(input)
+		n, err := reader.Read(buf)
+		if err != nil {
+			fmt.Println("Error reading input:", err)
+			continue
+		}
+
+		input := strings.TrimSpace(string(buf[:n]))
+
 		amount, err := strconv.Atoi(input)
 		if err != nil {
 			fmt.Println("Invalid input. Please enter a whole number.")
-			continue
+			break
 		}
 		return amount
 	}
+
+	return 0
 }
