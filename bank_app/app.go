@@ -37,15 +37,31 @@ func main() {
 func withdraw(balance int) int {
 	fmt.Print("Withdraw amount: ")
 	amount := scanInt()
-	balance -= amount
+
+	if !validateAmount(amount) {
+		return balance
+	}
+
+	newBalance := balance - amount
+
+	if newBalance < 0 {
+		fmt.Println("Insufficient funds")
+		return balance
+	}
+
 	fmt.Println("Withdrew", amount)
-	fmt.Println("Balance: ", balance)
-	return balance
+	fmt.Println("Balance: ", newBalance)
+	return newBalance
 }
 
 func deposit(balance int) int {
 	fmt.Print("Deposit amount: ")
 	amount := scanInt()
+
+	if !validateAmount(amount) {
+		return balance
+	}
+
 	balance += amount
 	fmt.Println("Deposited", amount)
 	fmt.Println("Balance: ", balance)
@@ -84,4 +100,13 @@ func scanInt() int {
 	}
 
 	return 0
+}
+
+func validateAmount(amount int) bool {
+	if amount < 1 {
+		fmt.Println("Enter an whole number greater than zero.")
+		return false
+	}
+
+	return true
 }
