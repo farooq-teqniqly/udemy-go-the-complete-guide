@@ -12,6 +12,8 @@ import (
 func main() {
 
 	fmt.Println("Bank App v0.1")
+	fmt.Println(GetFullName(0))
+	fmt.Println(GetRandomRunes(10))
 	balance, err := readBalanceFromFile()
 
 	if err != nil {
