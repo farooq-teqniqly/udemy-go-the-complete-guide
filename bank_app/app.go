@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -11,7 +12,11 @@ import (
 func main() {
 
 	fmt.Println("Bank App v0.1")
-	balance := readBalanceFromFile()
+	balance, err := readBalanceFromFile()
+
+	if err != nil {
+		fmt.Println("Error reading balance file:", err)
+	}
 
 	for {
 		showMenu()
@@ -36,15 +41,31 @@ func main() {
 
 const balanceFileName = "balance.txt"
 
-func readBalanceFromFile() int {
-	balanceText, _ := os.ReadFile(balanceFileName)
-	balance, _ := strconv.ParseInt(strings.TrimSpace(string(balanceText)), 10, 16)
-	return int(balance)
+func readBalanceFromFile() (int, error) {
+	balanceText, err := os.ReadFile(balanceFileName)
+
+	if err != nil {
+		return 0, errors.New("error reading balance file")
+	}
+
+	balance, err := strconv.ParseInt(strings.TrimSpace(string(balanceText)), 10, 16)
+
+	if err != nil {
+		return 0, errors.New("error parsing balance file")
+	}
+
+	return int(balance), nil
 }
 
-func writeBalanceToFile(balance int) {
-	_ = os.WriteFile(balanceFileName, []byte(strconv.Itoa(balance)), 0644)
+func writeBalanceToFile(balance int) error {
+	err := os.WriteFile(balanceFileName, []byte(strconv.Itoa(balance)), 0644)
+
+	if err != nil {
+		return errors.New("error writing balance file")
+	}
+
 	fmt.Println("Balance saved")
+	return nil
 }
 
 func withdraw(balance int) int {
@@ -64,7 +85,13 @@ func withdraw(balance int) int {
 
 	fmt.Println("Withdrew", amount)
 	fmt.Println("Balance: ", newBalance)
-	writeBalanceToFile(newBalance)
+	err := writeBalanceToFile(newBalance)
+
+	if err != nil {
+		fmt.Println("Error writing balance file:", err)
+	}
+
+	fmt.Println("Balance saved")
 	return newBalance
 }
 
@@ -79,7 +106,12 @@ func deposit(balance int) int {
 	balance += amount
 	fmt.Println("Deposited", amount)
 	fmt.Println("Balance: ", balance)
-	writeBalanceToFile(balance)
+	err := writeBalanceToFile(balance)
+
+	if err != nil {
+		fmt.Println("Error writing balance file:", err)
+	}
+
 	return balance
 }
 
