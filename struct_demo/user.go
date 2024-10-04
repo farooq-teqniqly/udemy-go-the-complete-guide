@@ -10,55 +10,65 @@ import (
 type User struct {
 	firstName string
 	lastName  string
-	birthDate string
+	birthDate time.Time
 	createdOn time.Time
+	age       int
 }
 
-func NewUser(firstName string, lastName string, birthDate string) User {
-	return User{
-		firstName: firstName,
-		lastName:  lastName,
-		birthDate: birthDate,
-		createdOn: time.Now(),
+func NewUser(firstName string, lastName string, birthDate string) (User, error) {
+	fn := strings.TrimSpace(firstName)
+
+	if fn == "" {
+		return User{}, errors.New("first name cannot be empty")
 	}
+
+	ln := strings.TrimSpace(lastName)
+
+	if ln == "" {
+		return User{}, errors.New("last name cannot be empty")
+	}
+
+	parsedBirthDate, err := time.Parse(time.DateOnly, birthDate)
+
+	if err != nil {
+		return User{}, errors.New("invalid birth date")
+	}
+
+	now := time.Now()
+	age := calculateAge(parsedBirthDate, now)
+
+	return User{
+		firstName: fn,
+		lastName:  ln,
+		birthDate: parsedBirthDate,
+		createdOn: now,
+		age:       age,
+	}, nil
 }
 
-func (u User) printUser() {
+func (u User) print() {
 	fmt.Println("First Name:", strings.ToUpper(u.firstName))
 	fmt.Println("Last Name:", strings.ToUpper(u.lastName))
-	fmt.Println("Birth Date:", u.birthDate)
+	fmt.Printf("Birth date: %s\n", u.createdOn.Format(time.RFC3339))
 	fmt.Printf("Created On: %s\n", u.createdOn.Format(time.RFC3339))
-
-	age, err := u.getAge()
-
-	if err != nil {
-		fmt.Println("Could not get age:", err)
-		return
-	}
-
-	fmt.Println("Age:", age)
+	fmt.Println("Age:", u.age)
 }
 
-func (u User) getAge() (int, error) {
-	birthDate, err := time.Parse(time.DateOnly, u.birthDate)
+func calculateAge(birthDate time.Time, now time.Time) int {
+	years := now.Year() - birthDate.Year()
 
-	if err != nil {
-		return 0, errors.New("invalid birth date")
-	}
-	years := u.createdOn.Year() - birthDate.Year()
-
-	if u.createdOn.Before(
+	if now.Before(
 		time.Date(
-			u.createdOn.Year(),
+			now.Year(),
 			birthDate.Month(),
 			birthDate.Day(),
 			0,
 			0,
 			0,
 			0,
-			u.createdOn.Location())) {
+			now.Location())) {
 		years--
 	}
 
-	return years, nil
+	return years
 }

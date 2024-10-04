@@ -15,8 +15,14 @@ func main() {
 	ln := promptAndGetData(PromptLastName)
 	dob := promptAndGetData(PromptBirthDate)
 
-	var appUser = NewUser(fn, ln, dob)
-	appUser.printUser()
+	var appUser, err = NewUser(fn, ln, dob)
+
+	if err != nil {
+		fmt.Println("Could not create user.", err)
+		return
+	}
+
+	appUser.print()
 }
 
 func promptAndGetData(prompt string) string {
