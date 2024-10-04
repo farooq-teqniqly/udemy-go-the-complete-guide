@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 const (
@@ -16,13 +15,7 @@ func main() {
 	ln := promptAndGetData(PromptLastName)
 	dob := promptAndGetData(PromptBirthDate)
 
-	var appUser = User{
-		firstName: fn,
-		lastName:  ln,
-		birthDate: dob,
-		createdOn: time.Now(),
-	}
-
+	var appUser = NewUser(fn, ln, dob)
 	appUser.printUser()
 }
 

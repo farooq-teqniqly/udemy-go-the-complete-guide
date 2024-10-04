@@ -14,6 +14,15 @@ type User struct {
 	createdOn time.Time
 }
 
+func NewUser(firstName string, lastName string, birthDate string) User {
+	return User{
+		firstName: firstName,
+		lastName:  lastName,
+		birthDate: birthDate,
+		createdOn: time.Now(),
+	}
+}
+
 func (u User) printUser() {
 	fmt.Println("First Name:", strings.ToUpper(u.firstName))
 	fmt.Println("Last Name:", strings.ToUpper(u.lastName))
