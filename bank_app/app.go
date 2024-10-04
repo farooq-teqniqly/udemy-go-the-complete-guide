@@ -11,7 +11,7 @@ import (
 func main() {
 
 	fmt.Println("Bank App v0.1")
-	balance := 0
+	balance := readBalanceFromFile()
 
 	for {
 		showMenu()
@@ -34,6 +34,19 @@ func main() {
 	}
 }
 
+const balanceFileName = "balance.txt"
+
+func readBalanceFromFile() int {
+	balanceText, _ := os.ReadFile(balanceFileName)
+	balance, _ := strconv.ParseInt(strings.TrimSpace(string(balanceText)), 10, 16)
+	return int(balance)
+}
+
+func writeBalanceToFile(balance int) {
+	_ = os.WriteFile(balanceFileName, []byte(strconv.Itoa(balance)), 0644)
+	fmt.Println("Balance saved")
+}
+
 func withdraw(balance int) int {
 	fmt.Print("Withdraw amount: ")
 	amount := scanInt()
@@ -51,6 +64,7 @@ func withdraw(balance int) int {
 
 	fmt.Println("Withdrew", amount)
 	fmt.Println("Balance: ", newBalance)
+	writeBalanceToFile(newBalance)
 	return newBalance
 }
 
@@ -65,6 +79,7 @@ func deposit(balance int) int {
 	balance += amount
 	fmt.Println("Deposited", amount)
 	fmt.Println("Balance: ", balance)
+	writeBalanceToFile(balance)
 	return balance
 }
 
