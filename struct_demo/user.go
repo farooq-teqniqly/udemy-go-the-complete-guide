@@ -49,8 +49,8 @@ func NewUser(firstName string, lastName string, birthDate string) (User, error) 
 func (u User) print() {
 	fmt.Println("First Name:", strings.ToUpper(u.firstName))
 	fmt.Println("Last Name:", strings.ToUpper(u.lastName))
-	fmt.Printf("Birth date: %s\n", u.createdOn.Format(time.RFC3339))
-	fmt.Printf("Created On: %s\n", u.createdOn.Format(time.RFC3339))
+	fmt.Println("Birth date:", u.createdOn.Format(time.RFC3339))
+	fmt.Println("Created On:", u.createdOn.Format(time.RFC3339))
 	fmt.Println("Age:", u.age)
 }
 
