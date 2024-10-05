@@ -15,7 +15,7 @@ func New(title, body string) *Note {
 }
 
 func (note *Note) JSONEncode() ([]byte, error) {
-	jsonData, err := json.Marshal(note)
+	jsonData, err := json.MarshalIndent(note, "", "  ")
 
 	if err != nil {
 		return nil, err
