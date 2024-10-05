@@ -15,7 +15,7 @@ func main() {
 	_, _ = fmt.Printf("Your noted titled %s has the following content:\n", newNote.Title)
 	fmt.Println(newNote.Body)
 
-	json, err := newNote.Json()
+	json, err := newNote.JSONEncode()
 
 	if err != nil {
 		fmt.Println("Error converting note to JSON:", err)
@@ -38,8 +38,8 @@ func getUserInput(prompt string) string {
 	return input
 }
 
-func writeToFile(content, filename string) error {
-	err := os.WriteFile(filename, []byte(content), 0644)
+func writeToFile(content []byte, filename string) error {
+	err := os.WriteFile(filename, content, 0644)
 
 	if err != nil {
 		return err

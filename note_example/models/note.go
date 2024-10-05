@@ -14,12 +14,12 @@ func New(title, body string) *Note {
 	}
 }
 
-func (note *Note) Json() (string, error) {
+func (note *Note) JSONEncode() ([]byte, error) {
 	jsonData, err := json.Marshal(note)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(jsonData), nil
+	return jsonData, nil
 }
