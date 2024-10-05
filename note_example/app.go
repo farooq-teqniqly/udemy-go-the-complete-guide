@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"teqniqly.com/note_example/models"
 )
 
@@ -35,7 +36,7 @@ func getUserInput(prompt string) string {
 	fmt.Print(prompt)
 	reader := bufio.NewReader(os.Stdin)
 	input, _ := reader.ReadString('\n')
-	return input
+	return strings.TrimSpace(input)
 }
 
 func writeToFile(content []byte, filename string) error {

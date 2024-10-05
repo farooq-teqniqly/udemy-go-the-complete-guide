@@ -3,8 +3,8 @@ package note
 import "encoding/json"
 
 type Note struct {
-	Title string
-	Body  string
+	Title string `json:"title"`
+	Body  string `json:"body"`
 }
 
 func New(title, body string) *Note {
