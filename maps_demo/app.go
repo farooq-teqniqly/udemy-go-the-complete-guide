@@ -28,4 +28,12 @@ func main() {
 	}
 
 	fmt.Println(ages)
+
+	courses := make(map[string]string, 3)
+
+	courses["Go"] = "The Complete Guide"
+	courses["Python"] = "Python for Everybody"
+	courses["JavaScript"] = "JavaScript for Everybody"
+
+	fmt.Println(courses)
 }
