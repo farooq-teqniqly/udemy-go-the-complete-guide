@@ -19,6 +19,9 @@ func main() {
 	fmt.Println(floatNumbers)
 
 	fmt.Println(factorial(10))
+
+	fmt.Println(average(1, 2, 3, 4, 5))
+	fmt.Println(average(1.3, 2.3, 3.3, 4.3, 5.3))
 }
 
 func add[T int | float64 | string](a, b T) T {
@@ -44,4 +47,14 @@ func factorial(n int) int {
 	}
 
 	return n * factorial(n-1)
+}
+
+func average[T int | float64](n ...T) float64 {
+	sum := 0.0
+
+	for _, val := range n {
+		sum += float64(val)
+	}
+
+	return sum / float64(len(n))
 }
