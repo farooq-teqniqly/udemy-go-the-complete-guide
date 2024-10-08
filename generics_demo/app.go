@@ -17,6 +17,8 @@ func main() {
 
 	fmt.Println(intNumbers)
 	fmt.Println(floatNumbers)
+
+	fmt.Println(factorial(10))
 }
 
 func add[T int | float64 | string](a, b T) T {
@@ -34,4 +36,12 @@ func transform[T int | float64](numbers *[]T, transformer func(T) T) {
 		transformed := transformer(val)
 		(*numbers)[i] = transformed
 	}
+}
+
+func factorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+
+	return n * factorial(n-1)
 }
