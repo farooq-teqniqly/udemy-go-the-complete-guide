@@ -22,6 +22,9 @@ func main() {
 
 	fmt.Println(average(1, 2, 3, 4, 5))
 	fmt.Println(average(1.3, 2.3, 3.3, 4.3, 5.3))
+
+	fmt.Println(average(intNumbers...))
+	fmt.Println(average(floatNumbers...))
 }
 
 func add[T int | float64 | string](a, b T) T {
